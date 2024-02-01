@@ -1,18 +1,25 @@
-document.addEventListener('DOMContentLoaded', function () {
-  // Get all prices with class="prices"
-  const prices = document.querySelectorAll('.prices');
+const getSumBtn = document.createElement("button");
+getSumBtn.append("Get Total Price");
+document.body.appendChild(getSumBtn);
 
-  // Calculate the total price
-  const totalPrice = Array.from(prices).reduce((sum, priceElement) => {
-    const price = parseFloat(priceElement.textContent);
-    return sum + price;
-  }, 0);
+const getSum = () => {
+  getSumBtn.disabled = true;
+  const prices = document.querySelectorAll(".price");
+  let totalPrice = 0;
+  prices.forEach(price => {
+    const value = parseInt(price.textContent);
+    if(!Number.isNaN(value)){
+      totalPrice += value;
+    }
+  });
+  const totalPriceRow = document.createElement("tr");
+  totalPriceRow.id = "ans";
+  const totalPriceData = document.createElement("td");
+  totalPriceRow.appendChild(totalPriceData);
+  const data = `Total Price (in Rs): ${totalPrice}`;
+  totalPriceData.append(data);
+  const table = document.querySelector("tbody");
+  table.appendChild(totalPriceRow);
+};
 
-  // Create a new row for total price
-  const totalRow = document.createElement('tr');
-  totalRow.innerHTML = `<td>Total Price</td><td>${totalPrice}</td>`;
-
-  // Append the new row to the table
-  const table = document.getElementById('groceryTable');
-  table.appendChild(totalRow);
-});
+getSumBtn.addEventListener("click", getSum);
